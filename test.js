@@ -1,7 +1,7 @@
 const Quantum = require('./src/a');
 
 async function main() {
-    const quantumQuery = new QuantumQuery();
+    const quantumQuery = new Quantum.QuantumQuery();
   
     // Define tasks
     const tasks = ["API request", "Database query", "File I/O"];
