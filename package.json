@@ -1,0 +1,23 @@
+{
+  "name": "quantumquery",
+  "version": "0.0.0",
+  "description": "Adds quantum functions to your Project.",
+  "main": "there is not entry points silly",
+  "scripts": {
+    "test": "why this"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Afonsobrasil/QuantumQuery.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "Quantum"
+  ],
+  "author": "Afonso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Afonsobrasil/QuantumQuery/issues"
+  },
+  "homepage": "https://github.com/Afonsobrasil/QuantumQuery#readme"
+}
