@@ -1,4 +1,4 @@
-const Quantum = require('./src');
+const Quantum = require('./src/a');
 
 async function main() {
     const quantumQuery = new QuantumQuery();
