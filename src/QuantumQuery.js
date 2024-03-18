@@ -1,4 +1,3 @@
-
 class QuantumQuery {
   constructor() {
     this.tasks = [];
@@ -44,6 +43,10 @@ class QuantumQuery {
     // Simulated quantum parallelism
     const delay = Math.random() * 1000; // Simulate async operation
     await new Promise(resolve => setTimeout(resolve, delay));
+    // Simulate error occurrence with a 20% chance
+    if (Math.random() < 0.2) {
+      throw new Error("Task execution failed.");
+    }
     return task;
   }
 
@@ -78,9 +81,31 @@ class QuantumQuery {
     quantumQuery.addTask("Task 2", "Group 1");
     quantumQuery.addTask("Task 3");
 
+    // Observer function to observe task execution
+    function observer(tasks) {
+      console.log("Tasks executed:", tasks);
+    }
+
+    // Add observer to QuantumQuery
+    quantumQuery.observeTasks(observer);
+
     // Execute tasks
     await quantumQuery.executeTasks();
     console.log("Tasks executed successfully.");
+  }
+
+  // Quantum Superposition Operators
+  static async applyQuantumSuperpositionOperator(operator, tasks) {
+    // Apply the quantum superposition operator to each task
+    return tasks.map(task => operator(task));
+  }
+
+  static async testQuantumSuperpositionOperator() {
+    const tasks = ["Task 1", "Task 2", "Task 3"];
+    const operator = task => task.toUpperCase(); // Example operator: Convert task to uppercase
+
+    const result = await QuantumQuery.applyQuantumSuperpositionOperator(operator, tasks);
+    console.log("Quantum superposition operator result:", result);
   }
 }
 
