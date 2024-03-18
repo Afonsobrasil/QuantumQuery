@@ -71,6 +71,6 @@ class QuantumQuery {
       await quantumQuery.executeTasks();
       console.log("Tasks executed successfully.");
     }
-  }
+}
   
-  module.exports = QuantumQuery;
+module.exports = QuantumQuery;
