@@ -33,10 +33,21 @@ class QuantumQuery {
       // Apply quantum superposition operator
       const transformedTask = QuantumQuery.quantumOperator(task);
       
+      // Simulated quantum probabilistic execution
+      const shouldExecute = Math.random() < 0.5; // 50% chance of execution
+      if (shouldExecute) {
+        return await this.executeTask(transformedTask);
+      } else {
+        console.log("Skipping task execution:", transformedTask);
+        return transformedTask; // Return task without execution
+      }
+    }
+
+    async executeTask(task) {
       // Simulated quantum parallelism
       const delay = Math.random() * 1000; // Simulate async operation
       await new Promise(resolve => setTimeout(resolve, delay));
-      return transformedTask;
+      return task;
     }
   
     async retryTask(task) {
