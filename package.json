@@ -1,6 +1,6 @@
 {
   "name": "quantumquery",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Adds quantum functions to your Project.",
   "main": "there is not entry points silly",
   "scripts": {

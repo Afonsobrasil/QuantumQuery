@@ -156,6 +156,26 @@ class QuantumQuery {
       console.error("Failed to execute tasks:", error);
     }
   }
+  static async middleware(req, res, next) {
+    try {
+      // Instantiate QuantumQuery with custom options if provided
+      const quantumQuery = new QuantumQuery(req.quantumOptions);
+      
+      // Define tasks and entangled groups (if needed)
+      // quantumQuery.addTask(...);
+
+      // Execute tasks
+      await quantumQuery.executeTasks();
+
+      // Optionally, access the result or state of tasks
+      // const tasks = quantumQuery.getTasks();
+      
+      next();
+    } catch (error) {
+      console.error("Error occurred during QuantumQuery middleware execution:", error);
+      next(error);
+    }
+  }
 }
 
 module.exports = QuantumQuery;
