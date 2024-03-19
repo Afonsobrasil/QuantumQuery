@@ -4,6 +4,12 @@ class QuantumQuery {
     this.entangledGroups = [];
     this.errorCorrectionEnabled = true;
     this.observers = [];
+    this.maxConcurrency = 10; // Maximum number of concurrent tasks
+    this.pendingTasks = []; // Queue for pending tasks
+    this.runningTasks = 0; // Number of currently running tasks
+    this.probabilityThreshold = options.probabilityThreshold || 0.5; // Probability threshold for probabilistic execution
+    this.pendingTasks = []; // Queue for pending tasks
+    this.runningTasks = 0; // Number of currently running tasks
   }
 
   addTask(task, group = null) {
@@ -29,10 +35,23 @@ class QuantumQuery {
 
   async runQuantumTask({ task, group }) {
     try {
+      // Ensure concurrency control
+      await this.waitUntilConcurrencyAvailable();
+
+      // Increment running tasks count
+      this.runningTasks++;
+
       const result = await this.processTask(task);
       if (group) {
         await this.entangleTasks(group);
       }
+
+      // Decrement running tasks count
+      this.runningTasks--;
+
+      // Process pending tasks
+      this.processPendingTasks();
+
       return result;
     } catch (error) {
       if (this.errorCorrectionEnabled) {
@@ -41,6 +60,21 @@ class QuantumQuery {
       } else {
         throw new Error(`Error occurred while processing task "${task}" in group "${group}": ${error.message}`);
       }
+    }
+  }
+
+  async waitUntilConcurrencyAvailable() {
+    // Wait until concurrency limit is reached
+    while (this.runningTasks >= this.maxConcurrency) {
+      await new Promise(resolve => setTimeout(resolve, 10)); // Wait for 10 milliseconds
+    }
+  }
+
+  async processPendingTasks() {
+    // Process pending tasks if any
+    while (this.pendingTasks.length > 0 && this.runningTasks < this.maxConcurrency) {
+      const task = this.pendingTasks.shift();
+      this.runQuantumTask(task);
     }
   }
 
@@ -125,3 +159,23 @@ class QuantumQuery {
 }
 
 module.exports = QuantumQuery;
+
+// REQUEST SPLIT
+// When code gets more than 200 lines, it will split to make code more readable.
+/* Features 0.1.0 
+Improved Error Handling: Enhance error handling mechanisms to provide more detailed error messages and better error reporting to users.
+
+Additional Quantum Superposition Operators: Introduce more quantum superposition operators to provide developers with a wider range of options for manipulating and interacting with asynchronous operations.
+
+Performance Optimization: Identify and implement optimizations to improve the performance and efficiency of QuantumQuery, making it faster and more scalable.
+
+Customizable Quantum Parameters: Allow developers to customize quantum parameters such as the probability threshold for probabilistic execution or the error correction strategy.
+
+Integration with External Libraries: Add support for integrating QuantumQuery with external libraries or frameworks commonly used in JavaScript development, such as React or Express.
+
+Documentation Improvements: Enhance the documentation with more comprehensive explanations, examples, and usage guidelines to make it easier for developers to understand and use QuantumQuery.
+
+Unit Tests and Test Coverage: Increase test coverage by adding more unit tests to ensure the reliability and stability of QuantumQuery. This can help catch bugs and regressions early in the development process.
+
+Feedback Mechanism: Implement a feedback mechanism to gather input from users and incorporate their suggestions and feature requests into future versions of QuantumQuery.
+*/
