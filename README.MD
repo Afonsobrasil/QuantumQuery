@@ -17,7 +17,3 @@ npm i --save quantumquery
 * Run Quantum Tasks
 
 and more....
-
-## Documentation
-
-see doc here: [Documentation](https://quantumqueryjs.w3spaces.com/intro.html)
