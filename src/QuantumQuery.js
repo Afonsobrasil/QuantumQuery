@@ -17,9 +17,14 @@ class QuantumQuery {
   }
 
   async executeTasks() {
-    const quantumTasks = this.tasks.map(task => this.runQuantumTask(task));
-    await Promise.all(quantumTasks);
-    this.notifyObservers();
+    try {
+      const quantumTasks = this.tasks.map(task => this.runQuantumTask(task));
+      await Promise.all(quantumTasks);
+      this.notifyObservers();
+    } catch (error) {
+      console.error("An error occurred while executing tasks:", error);
+      throw error;
+    }
   }
 
   async runQuantumTask({ task, group }) {
@@ -31,10 +36,10 @@ class QuantumQuery {
       return result;
     } catch (error) {
       if (this.errorCorrectionEnabled) {
-        console.error("Error occurred:", error);
+        console.error(`Error occurred while processing task "${task}" in group "${group}":`, error);
         await this.retryTask(task); // Apply error correction techniques (e.g., retry)
       } else {
-        throw error;
+        throw new Error(`Error occurred while processing task "${task}" in group "${group}": ${error.message}`);
       }
     }
   }
@@ -73,6 +78,26 @@ class QuantumQuery {
     this.observers.forEach(observer => observer(this.tasks));
   }
 
+  // Additional Quantum Superposition Operators
+
+  static async applyUpperCaseOperator(task) {
+    return task.toUpperCase(); // Convert task to uppercase
+  }
+
+  static async applyLowerCaseOperator(task) {
+    return task.toLowerCase(); // Convert task to lowercase
+  }
+
+  static async applyReverseOperator(task) {
+    return task.split("").reverse().join(""); // Reverse the task string
+  }
+
+  static async applyRandomDelayOperator(task) {
+    const delay = Math.random() * 1000; // Random delay between 0 and 1000 milliseconds
+    await new Promise(resolve => setTimeout(resolve, delay));
+    return task;
+  }
+
   static async test() {
     const quantumQuery = new QuantumQuery();
 
@@ -90,22 +115,12 @@ class QuantumQuery {
     quantumQuery.observeTasks(observer);
 
     // Execute tasks
-    await quantumQuery.executeTasks();
-    console.log("Tasks executed successfully.");
-  }
-
-  // Quantum Superposition Operators
-  static async applyQuantumSuperpositionOperator(operator, tasks) {
-    // Apply the quantum superposition operator to each task
-    return tasks.map(task => operator(task));
-  }
-
-  static async testQuantumSuperpositionOperator() {
-    const tasks = ["Task 1", "Task 2", "Task 3"];
-    const operator = task => task.toUpperCase(); // Example operator: Convert task to uppercase
-
-    const result = await QuantumQuery.applyQuantumSuperpositionOperator(operator, tasks);
-    console.log("Quantum superposition operator result:", result);
+    try {
+      await quantumQuery.executeTasks();
+      console.log("Tasks executed successfully.");
+    } catch (error) {
+      console.error("Failed to execute tasks:", error);
+    }
   }
 }
 
